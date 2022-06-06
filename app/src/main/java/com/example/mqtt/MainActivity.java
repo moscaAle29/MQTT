@@ -9,12 +9,11 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import org.eclipse.paho.android.service.MqttAndroidClient;
 import org.eclipse.paho.client.mqttv3.IMqttActionListener;
-import org.eclipse.paho.client.mqttv3.IMqttDeliveryToken;
 import org.eclipse.paho.client.mqttv3.IMqttToken;
-import org.eclipse.paho.client.mqttv3.MqttCallback;
 import org.eclipse.paho.client.mqttv3.MqttClient;
 import org.eclipse.paho.client.mqttv3.MqttException;
-import org.eclipse.paho.client.mqttv3.MqttMessage;
+
+import java.nio.charset.StandardCharsets;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -69,23 +68,7 @@ public class MainActivity extends AppCompatActivity {
 
     private void sub(){
     try{
-       client.subscribe(topic,0);
-       client.setCallback(new MqttCallback() {
-           @Override
-           public void connectionLost(Throwable cause) {
-               //log
-           }
-
-           @Override
-           public void messageArrived(String topic, MqttMessage message) throws Exception {
-                Log.d(TAG, "message:"+ new String(message.getPayload()));
-           }
-
-           @Override
-           public void deliveryComplete(IMqttDeliveryToken token) {
-                //toast
-           }
-       });
+       client.publish("test/H2polito","Hello".getBytes(StandardCharsets.UTF_8),1,true);
     }catch(MqttException e){
         e.printStackTrace();
     }
